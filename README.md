@@ -28,9 +28,9 @@ Examples of nose's behavior
 
 There's nothing out of the ordinary here.
 
-*Command*: `nosetests -v tests/`
+**Command**: `nosetests -v tests/`
 
-*Result*:
+**Result**:
 
 - 11 tests take about 22 seconds
 - The result of each test case is output immediately
@@ -40,9 +40,9 @@ There's nothing out of the ordinary here.
 
 There's no ouput at all until all the tests have finished.
 
-*Command*: `nosetests -v --processes=1 tests/`
+**Command**: `nosetests -v --processes=1 tests/`
 
-*Result*:
+**Result**:
 
 - 7 of 11 tests ERROR with a `TimedOutException` from `nose/plugins/multiprocess.py`
 - The tests take 10-11 seconds
@@ -56,9 +56,9 @@ We need to raise the process timeout to allow a sufficient amount of time for
 the child process to run all of its tests. This requires we anticipate how long
 our tests will take to run. (The default process timeout is 10 seconds.)
 
-*Command*: `nosetests -v --processes=1 --process-timeout=60 tests/`
+**Command**: `nosetests -v --processes=1 --process-timeout=60 tests/`
 
-*Result*:
+**Result**:
 
 - The tests take about 22 seconds
 - We see no output until all test cases in a module have completed.
@@ -73,9 +73,9 @@ test cases in `test_small.py`.)
 Each module's tests are run entirely in one process. We are still plagued by
 nose's default process timeout (10 seconds).
 
-*Command*: `nosetests -v --processes=2 tests/`
+**Command**: `nosetests -v --processes=2 tests/`
 
-*Result*:
+**Result**:
 
 - 5 of 11 tests ERROR with a `TimedOutException` from `nose/plugins/multiprocess.py`
 - The tests take about 10-11 seconds to complete
@@ -91,9 +91,9 @@ module print first)
 The process timeout gets rid of TimedOutExceptions. Nose only maps modules
 across processes, rather than mapping test cases across processes.
 
-*Command*: `nosetests -v --processes=2 --process-timeout=60 tests/`
+**Command**: `nosetests -v --processes=2 --process-timeout=60 tests/`
 
-*Result*:
+**Result**:
 
 - The tests take about 18 seconds to execute.
 - We see no output until all test cases in a module have completed (in this
@@ -105,9 +105,9 @@ module print first)
 
 ### Multiprocess plugin, 3 processes (process timeout=60)
 
-*Command*: `nosetests -v --processes=3 --process-timeout=60 tests/`
+**Command**: `nosetests -v --processes=3 --process-timeout=60 tests/`
 
-*Result*: The result is identical to using two processes with a process timeout
+**Result**: The result is identical to using two processes with a process timeout
 of 60. The third process was entirely unused!
 
 
