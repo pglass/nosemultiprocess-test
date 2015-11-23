@@ -126,15 +126,15 @@ Take aways
 ----------
 
 - By default, nose maps classes across processes. It _can_ distribute
-individual test cases acrosses worker processes, but instead assumes the tests
-it's running are not safe to parallelize. This meant adding more processes
+individual test cases across workers, but instead nose assumes the tests
+it's running are not safe to parallelize. This means adding more processes
 than we had classes was pointless. Nose refused to run tests in more that two
-of the processes.
+of the processes, in our case.
 - Nose's default process timeout was pretty silly for our use case. In this
 case, we had 11 test cases that took two seconds each, and we immediately hit
 the process timeout. It's pretty easy to have 5+ second test cases when writing
 functional tests against asyncronous APIs (you're over the default process
-timeout with just two 5+ second test cases in the same class).
+timeout of 10 seconds with just two 5+ second test cases in the same class).
 - When running with multiple processes, the worker process must finish running
 all of its assigned test cases before any output is printed. When we combine
 this behavior with an uneven distribution of test cases across processes, we're
