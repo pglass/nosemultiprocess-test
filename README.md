@@ -2,7 +2,8 @@ Overview
 --------
 
 This is a little repository demonstrating a few little problems with how `nose`
-runs tests in multiple processes.
+runs tests in multiple processes. Then it goes over how to make nose run way
+better.
 
 The `tests/` module contains two modules:
 
@@ -21,8 +22,8 @@ Setup
 Just `pip install nose` and you're good to go.
 
 
-Examples of nose's behavior
----------------------------
+Examples of nose's default behavior
+-----------------------------------
 
 ### No multiprocess plugin
 
@@ -111,21 +112,30 @@ module print first)
 of 60. The third process was entirely unused!
 
 
+How to fix this
+---------------
+
+Nose actually provides a way to specify that a test class/module can be split
+up across multiple processes. You need add `_multiprocess_can_split_ = True` to
+your test class/module. Unfortunately, you have to modify your code to add this
+attribute. Nose does not have a flag that tells it to default to splitting up
+classes/modules across processes. (I wrote [this nose plugin](
+https://pypi.python.org/pypi/nose-mp-split) to resolve that).
+
 Take aways
 ----------
 
-- Nose maps modules across processes (or maybe classes. we can't tell from this
-example). It does _not_ compile a list of actual test functions/methods and map
-test cases across processes, in a manner that's more granular (and faster).
-- Adding more processes than we had modules (or classes. we can't tell from
-this example) was pointless. Nose refused to run tests in more that two of the
-processes.
+- By default, nose maps classes across processes. It _can_ distribute
+individual test cases acrosses worker processes, but instead assumes the tests
+it's running are not safe to parallelize. This meant adding more processes
+than we had classes was pointless. Nose refused to run tests in more that two
+of the processes.
 - Nose's default process timeout was pretty silly for our use case. In this
 case, we had 11 test cases that took two seconds each, and we immediately hit
 the process timeout. It's pretty easy to have 5+ second test cases when writing
-functional tests against asyncronous apis (you're over the default process
+functional tests against asyncronous APIs (you're over the default process
 timeout with just two 5+ second test cases in the same class).
-- When running with multiple processes, the worker process must finishe running
+- When running with multiple processes, the worker process must finish running
 all of its assigned test cases before any output is printed. When we combine
 this behavior with an uneven distribution of test cases across processes, we're
-waiting quite a while wondering why our tests look like they're hanging.
+left waiting quite a while wondering why our tests are hanging.
